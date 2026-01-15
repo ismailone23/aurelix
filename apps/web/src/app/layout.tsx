@@ -3,6 +3,7 @@ import { Providers } from "@/components/providers";
 // @ts-ignore
 import "@workspace/ui/globals.css";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -25,9 +26,10 @@ export default function RootLayout({
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
       >
         <Providers>
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full min-h-screen">
             <Navbar />
-            {children}
+            <main className="flex-grow">{children}</main>
+            <Footer />
           </div>
         </Providers>
       </body>

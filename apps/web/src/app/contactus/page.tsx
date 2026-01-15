@@ -5,8 +5,6 @@ import { Input } from "@workspace/ui/components/input";
 import { Textarea } from "@workspace/ui/components/textarea";
 import { Button } from "@workspace/ui/components/button";
 import { Label } from "@workspace/ui/components/label";
-import { FormField } from "@workspace/ui/components/form";
-import { Form } from "react-hook-form";
 
 interface ContactFormData {
   name: string;
@@ -116,7 +114,7 @@ export default function ContactUs() {
 
             <form
               onSubmit={onSubmit}
-              className="space-y-6 bg-neutral-50 dark:bg-neutral-900 p-8 rounded-lg border border-neutral-200 dark:border-neutral-800"
+              className="space-y-6 bg-neutral-50 dark:bg-neutral-900 p-8 rounded-lg border border-neutral-300 dark:border-neutral-800"
             >
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
