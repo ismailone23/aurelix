@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import NavLink from "./navlink";
 import { Input } from "@workspace/ui/components/input";
-import { Search, Sun, Moon, Menu, X } from "lucide-react";
+import { Search, Sun, Moon, Menu, X, ShoppingCart } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -49,6 +49,14 @@ export default function Navbar() {
             <Search className="w-4 h-4 md:w-5 md:h-5" />
           </div>
 
+          <Link
+            href="/cart"
+            className="p-1.5 md:p-2 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
+            aria-label="Shopping cart"
+          >
+            <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
+          </Link>
+
           {mounted && (
             <button
               onClick={toggleTheme}
@@ -78,7 +86,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 border-t border-neutral-300 dark:border-neutral-700 bg-white dark:bg-gray-950 animate-in slide-in-from-top">
+        <div className="md:hidden absolute top-full left-0 right-0 border-t border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 animate-in slide-in-from-top">
           <div className="container mx-auto px-4 py-3 flex flex-col gap-3">
             <div className="flex items-center px-2 py-2 rounded-md bg-neutral-200 dark:bg-neutral-800">
               <Input

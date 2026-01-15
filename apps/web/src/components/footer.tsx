@@ -97,13 +97,11 @@ export default function Footer() {
 
         {/* Divider */}
         <div className="border-t border-neutral-300 dark:border-neutral-700 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center items-start gap-4">
             <p className="text-sm opacity-60">
               © {currentYear} Aurelex. All rights reserved.
             </p>
-            <p className="text-sm opacity-60">
-              Designed with care for fragrance enthusiasts worldwide.
-            </p>
+            <p className="text-sm opacity-60">Designed by Ismail Hossain</p>
           </div>
         </div>
       </div>
