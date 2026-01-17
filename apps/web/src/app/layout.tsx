@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
-// @ts-ignore
 import "@workspace/ui/globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
