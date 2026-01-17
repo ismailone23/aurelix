@@ -3,7 +3,6 @@
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import { Upload, X, Loader2 } from "lucide-react";
-import { API_URL } from "./types";
 
 interface ImageUploaderProps {
   images: string[];
@@ -20,7 +19,7 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/upload`, {
+      const response = await fetch(`/api/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

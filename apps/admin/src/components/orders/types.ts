@@ -58,6 +58,3 @@ export const getStatusStyle = (status: string) => {
     "bg-gray-100 text-gray-800"
   );
 };
-
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";

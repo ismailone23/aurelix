@@ -100,7 +100,7 @@ export default function CheckoutPage() {
 
       // Send confirmation emails (fire and forget - don't block checkout)
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/email/order-confirmation`,
+        `${process.env.NEXT_PUBLIC_ADMIN_URL}/api/email/order-confirmation`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

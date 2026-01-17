@@ -17,6 +17,3 @@ export interface Product {
   createdAt: string | Date;
   updatedAt: string | Date;
 }
-
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";

@@ -10,7 +10,6 @@ import {
   OrderDetailModal,
   type Order,
   type OrderStatus,
-  API_URL,
 } from "@/components/orders";
 
 export default function OrdersPage() {
@@ -74,7 +73,7 @@ export default function OrdersPage() {
     // Send status update email if customer has email
     if (order.customerEmail) {
       const token = localStorage.getItem("token");
-      fetch(`${API_URL}/email/status-update`, {
+      fetch(`/api/email/status-update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

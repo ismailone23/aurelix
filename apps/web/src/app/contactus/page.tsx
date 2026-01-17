@@ -14,7 +14,7 @@ interface ContactFormData {
   message: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_ADMIN_URL;
 
 export default function ContactUs() {
   const [submitted, setSubmitted] = useState(false);
@@ -62,7 +62,7 @@ export default function ContactUs() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/contact`, {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
