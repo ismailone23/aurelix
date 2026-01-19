@@ -527,11 +527,58 @@ export const ordersRouter = router({
     // Get all orders
     const allOrders = await db.select().from(orders);
 
+    // Get all products with costs
+    const allProducts = await db.select().from(products);
+
+    // Get all order items to calculate costs
+    const allOrderItems = await db.select().from(orderItems);
+
+    // Calculate costs from orders
+    let totalCost = 0;
+    let monthlyCost = 0;
+
+    for (const order of allOrders) {
+      if (order.status === "cancelled") continue; // Don't count cancelled orders
+
+      const orderDate = new Date(order.createdAt);
+      const itemsForOrder = allOrderItems.filter(
+        (item) => item.orderId === order.id,
+      );
+
+      for (const item of itemsForOrder) {
+        const product = allProducts.find((p) => p.id === item.productId);
+        if (!product) continue;
+
+        let itemCost = 0;
+        if (item.variant && product.variants) {
+          const variant = (product.variants as any[]).find(
+            (v) => v.size === item.variant,
+          );
+          if (variant?.costPrice) {
+            itemCost = variant.costPrice * item.quantity;
+          }
+        } else if (product.costPrice) {
+          itemCost = product.costPrice * item.quantity;
+        }
+
+        totalCost += itemCost;
+
+        // Add to monthly cost if within current month
+        if (orderDate >= startOfMonth) {
+          monthlyCost += itemCost;
+        }
+      }
+    }
+
     // Calculate stats
     const totalOrders = allOrders.length;
     const totalRevenue = allOrders
       .filter((o) => o.status !== "cancelled")
       .reduce((sum, o) => sum + o.total, 0);
+
+    const totalProfit = totalRevenue - totalCost;
+    const profitMargin =
+      totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0;
 
     const weeklyOrders = allOrders.filter(
       (o) => new Date(o.createdAt) >= startOfWeek,
@@ -546,6 +593,7 @@ export const ordersRouter = router({
     const monthlyRevenue = monthlyOrders
       .filter((o) => o.status !== "cancelled")
       .reduce((sum, o) => sum + o.total, 0);
+    const monthlyProfit = monthlyRevenue - monthlyCost;
 
     const yearlyOrders = allOrders.filter(
       (o) => new Date(o.createdAt) >= startOfYear,
@@ -649,8 +697,13 @@ export const ordersRouter = router({
     return {
       totalOrders,
       totalRevenue,
+      totalCost,
+      totalProfit,
+      profitMargin,
       weeklyRevenue,
       monthlyRevenue,
+      monthlyCost,
+      monthlyProfit,
       yearlyRevenue,
       ordersBySource: {
         website: websiteOrders,

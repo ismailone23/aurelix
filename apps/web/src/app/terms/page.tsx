@@ -21,7 +21,7 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-3">1. Introduction</h2>
               <p>
-                Welcome to Aurelex. These terms and conditions govern your use
+                Welcome to Aurelix. These terms and conditions govern your use
                 of our website and services. By accessing and using this
                 website, you accept and agree to be bound by the terms and
                 provision of this agreement.
@@ -32,7 +32,7 @@ export default function Terms() {
               <h2 className="text-2xl font-semibold mb-3">2. Use License</h2>
               <p>
                 Permission is granted to temporarily download one copy of the
-                materials (information or software) on Aurelex website for
+                materials (information or software) on Aurelix website for
                 personal, non-commercial transitory viewing only. This is the
                 grant of a license, not a transfer of title, and under this
                 license you may not:
@@ -57,8 +57,8 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-3">3. Disclaimer</h2>
               <p>
-                The materials on Aurelex website are provided on an 'as is'
-                basis. Aurelex makes no warranties, expressed or implied, and
+                The materials on Aurelix website are provided on an 'as is'
+                basis. Aurelix makes no warranties, expressed or implied, and
                 hereby disclaims and negates all other warranties including,
                 without limitation, implied warranties or conditions of
                 merchantability, fitness for a particular purpose, or
@@ -70,10 +70,10 @@ export default function Terms() {
             <section>
               <h2 className="text-2xl font-semibold mb-3">4. Limitations</h2>
               <p>
-                In no event shall Aurelex or its suppliers be liable for any
+                In no event shall Aurelix or its suppliers be liable for any
                 damages (including, without limitation, damages for loss of data
                 or profit, or due to business interruption) arising out of the
-                use or inability to use the materials on the Aurelex website.
+                use or inability to use the materials on the Aurelix website.
               </p>
             </section>
 
@@ -82,8 +82,8 @@ export default function Terms() {
                 5. Accuracy of Materials
               </h2>
               <p>
-                The materials appearing on Aurelex website could include
-                technical, typographical, or photographic errors. Aurelex does
+                The materials appearing on Aurelix website could include
+                technical, typographical, or photographic errors. Aurelix does
                 not warrant that any of the materials on its website are
                 accurate, complete, or current.
               </p>

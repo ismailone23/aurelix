@@ -35,7 +35,7 @@ export default function LoginPage() {
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
             <ShieldCheck className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Aurelex Admin</h1>
+          <h1 className="text-2xl font-bold text-white">Aurelix Admin</h1>
           <p className="text-blue-100 text-sm mt-1">
             Sign in to your dashboard
           </p>

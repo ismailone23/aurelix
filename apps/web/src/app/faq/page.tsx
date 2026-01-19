@@ -4,14 +4,14 @@ import { HelpCircle, MessageCircle } from "lucide-react";
 export default function FAQ() {
   const faqs = [
     {
-      question: "How long does Aurelex fragrance last?",
+      question: "How long does Aurelix fragrance last?",
       answer:
         "Most of our fragrances have a longevity of 6-8 hours on the skin, depending on skin type and application method. For longer-lasting scent, apply to pulse points like wrists, neck, and behind the ears.",
     },
     {
       question: "Are your products cruelty-free?",
       answer:
-        "Yes, all Aurelex fragrances are cruelty-free and not tested on animals. We are committed to ethical sourcing and production practices.",
+        "Yes, all Aurelix fragrances are cruelty-free and not tested on animals. We are committed to ethical sourcing and production practices.",
     },
     {
       question: "Can I return a fragrance I don't like?",

@@ -21,7 +21,7 @@ export default function Returns() {
             <section>
               <h2 className="text-2xl font-semibold mb-3">Return Policy</h2>
               <p>
-                We want you to be completely satisfied with your Aurelex
+                We want you to be completely satisfied with your Aurelix
                 purchase. If you're not happy with your order, we offer a
                 hassle-free 30-day return policy.
               </p>
@@ -45,7 +45,7 @@ export default function Returns() {
               <h2 className="text-2xl font-semibold mb-3">How to Return</h2>
               <ol className="list-decimal list-inside space-y-2">
                 <li>
-                  Contact our customer support team at returns@aurelex.com
+                  Contact our customer support team at returns@aurelix.com
                 </li>
                 <li>Provide your order number and reason for return</li>
                 <li>Receive return shipping label</li>

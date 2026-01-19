@@ -21,7 +21,7 @@ export default function Privacy() {
             <section>
               <h2 className="text-2xl font-semibold mb-3">1. Introduction</h2>
               <p>
-                Aurelex ("we", "our", or "us") operates the website. This page
+                Aurelix ("we", "our", or "us") operates the website. This page
                 informs you of our policies regarding the collection, use, and
                 disclosure of personal data when you use our website and the
                 choices you have associated with that data.
@@ -48,7 +48,7 @@ export default function Privacy() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-3">3. Use of Data</h2>
-              <p>Aurelex uses the collected data for various purposes:</p>
+              <p>Aurelix uses the collected data for various purposes:</p>
               <ul className="list-disc list-inside mt-2 space-y-1">
                 <li>To provide and maintain our service</li>
                 <li>To notify you about changes to our service</li>

@@ -105,7 +105,7 @@ export default function About() {
               Join Our Community
             </h2>
             <p className="opacity-70 mb-4">
-              Discover your signature scent with Aurelex. Follow us on social
+              Discover your signature scent with Aurelix. Follow us on social
               media to stay updated with our latest releases and exclusive
               offers.
             </p>

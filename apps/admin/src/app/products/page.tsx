@@ -2,6 +2,7 @@
 
 import { trpc } from "@/utils/trpc";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@workspace/ui/components/button";
 import { Plus, Loader2, RefreshCw } from "lucide-react";
 import {
@@ -12,7 +13,7 @@ import {
 } from "@/components/products";
 
 export default function ProductsPage() {
-  const [showCreateForm, setShowCreateForm] = useState(false);
+  const router = useRouter();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const {
@@ -20,13 +21,6 @@ export default function ProductsPage() {
     isLoading,
     refetch,
   } = trpc.products.list.useQuery({ limit: 100, offset: 0 });
-
-  const createMutation = trpc.products.create.useMutation({
-    onSuccess: () => {
-      refetch();
-      setShowCreateForm(false);
-    },
-  });
 
   const updateMutation = trpc.products.update.useMutation({
     onSuccess: () => {
@@ -38,24 +32,6 @@ export default function ProductsPage() {
   const deleteMutation = trpc.products.delete.useMutation({
     onSuccess: () => refetch(),
   });
-
-  const handleCreate = (data: {
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-    images?: string[];
-    variants?: Variant[];
-  }) => {
-    createMutation.mutate({
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      stock: data.stock,
-      images: data.images,
-      variants: data.variants,
-    });
-  };
 
   const handleUpdate = (data: {
     name: string;
@@ -107,23 +83,13 @@ export default function ProductsPage() {
             Refresh
           </Button>
           <Button
-            onClick={() => setShowCreateForm(true)}
+            onClick={() => router.push("/products/create")}
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" /> Add Product
           </Button>
         </div>
       </div>
-
-      {/* Create Form Modal */}
-      {showCreateForm && (
-        <ProductFormModal
-          mode="create"
-          onClose={() => setShowCreateForm(false)}
-          onSubmit={handleCreate}
-          isPending={createMutation.isPending}
-        />
-      )}
 
       {/* Edit Form Modal */}
       {editingProduct && (
@@ -148,7 +114,7 @@ export default function ProductsPage() {
         {products?.length === 0 && (
           <div className="text-center py-12">
             <Button
-              onClick={() => setShowCreateForm(true)}
+              onClick={() => router.push("/products/create")}
               variant="outline"
               className="mt-4"
             >

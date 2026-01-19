@@ -15,9 +15,14 @@ export const STATUS_COLORS = {
 export interface DashboardStats {
   totalOrders: number;
   totalRevenue: number;
+  totalCost: number;
+  totalProfit: number;
+  profitMargin: number;
   weeklyRevenue: number;
   monthlyRevenue: number;
   yearlyRevenue: number;
+  monthlyCost?: number;
+  monthlyProfit?: number;
   ordersBySource: {
     website: number;
     facebook: number;
