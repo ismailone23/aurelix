@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "@workspace/ui/components/button";
-import { AlertCircle, XCircle, FileImage } from "lucide-react";
+import { AlertCircle, XCircle } from "lucide-react";
 import { VariantEditor } from "./VariantEditor";
 import { ImageUploader } from "./ImageUploader";
 import type { Product, Variant } from "./types";
@@ -24,7 +25,6 @@ interface ProductFormProps {
   errors?: Record<string, string>;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const MAX_IMAGES = 5;
 
 export function ProductForm({
@@ -64,14 +64,14 @@ export function ProductForm({
     } else {
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
-        if (!variant.size || variant.size.trim().length === 0) {
+        if (!variant?.size || variant.size.trim().length === 0) {
           newErrors[`variant_${i}_size`] = "Variant size is required";
         }
-        if (isNaN(variant.price) || variant.price <= 0) {
+        if (isNaN(variant?.price || 0) || (variant?.price || 0) <= 0) {
           newErrors[`variant_${i}_price`] =
             "Variant price must be greater than 0";
         }
-        if (isNaN(variant.stock) || variant.stock < 0) {
+        if (isNaN(variant?.stock || 0) || (variant?.stock || 0) < 0) {
           newErrors[`variant_${i}_stock`] =
             "Variant stock must be 0 or greater";
         }
@@ -129,7 +129,6 @@ export function ProductForm({
     });
   };
 
-  const title = mode === "create" ? "Create New Product" : "Edit Product";
   const submitText = mode === "create" ? "Create Product" : "Update Product";
   const pendingText = mode === "create" ? "Creating..." : "Updating...";
 
@@ -304,9 +303,11 @@ export function ProductForm({
           <div className="mt-2 grid grid-cols-4 gap-2">
             {images.map((img, idx) => (
               <div key={idx} className="relative group">
-                <img
+                <Image
                   src={img}
                   alt={`Product ${idx + 1}`}
+                  width={80}
+                  height={80}
                   className="w-full h-20 object-cover rounded-lg"
                 />
                 <button

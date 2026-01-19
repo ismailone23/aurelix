@@ -65,14 +65,14 @@ export function ProductFormModal({
     } else {
       for (let i = 0; i < variants.length; i++) {
         const variant = variants[i];
-        if (!variant.size || variant.size.trim().length === 0) {
+        if (!variant?.size || variant.size.trim().length === 0) {
           newErrors[`variant_${i}_size`] = "Variant size is required";
         }
-        if (isNaN(variant.price) || variant.price <= 0) {
+        if (isNaN(variant?.price || 0) || (variant?.price || 0) <= 0) {
           newErrors[`variant_${i}_price`] =
             "Variant price must be greater than 0";
         }
-        if (isNaN(variant.stock) || variant.stock < 0) {
+        if (isNaN(variant?.stock || 0) || (variant?.stock || 0) < 0) {
           newErrors[`variant_${i}_stock`] =
             "Variant stock must be 0 or greater";
         }
