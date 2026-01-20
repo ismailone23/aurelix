@@ -30,10 +30,16 @@ export const products = pgTable("products", {
   discount: integer("discount").default(0), // discount percentage (0-100)
   stock: integer("stock").notNull().default(0),
   images: json("images").$type<string[]>(),
-  // Variants stored as JSON array: [{size: "10ml", price: 40, costPrice: 30}, {size: "13ml", price: 100, costPrice: 70}]
+  // Variants stored as JSON array: [{size: "10ml", price: 40, costPrice: 30, discount: 0, stock: 10}, {size: "13ml", price: 100, costPrice: 70, discount: 5, stock: 20}]
   variants:
     json("variants").$type<
-      { size: string; price: number; costPrice?: number; stock: number }[]
+      {
+        size: string;
+        price: number;
+        costPrice?: number;
+        discount?: number;
+        stock: number;
+      }[]
     >(),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),

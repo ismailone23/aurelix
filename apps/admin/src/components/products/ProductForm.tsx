@@ -16,6 +16,7 @@ interface ProductFormProps {
     description: string;
     price: number;
     costPrice?: number;
+    discount?: number;
     stock: number;
     isActive?: boolean;
     images?: string[];
@@ -83,6 +84,16 @@ export function ProductForm({
       newErrors.costPrice = "Cost price must be 0 or greater";
     }
 
+    const discount = formData.get("discount") as string;
+    if (
+      discount &&
+      (isNaN(parseInt(discount)) ||
+        parseInt(discount) < 0 ||
+        parseInt(discount) > 100)
+    ) {
+      newErrors.discount = "Discount must be between 0 and 100";
+    }
+
     if (images.length === 0 && mode === "create") {
       newErrors.images = "At least one image is required";
     }
@@ -122,6 +133,9 @@ export function ProductForm({
       description: formData.get("description") as string,
       price: basePrice,
       costPrice: costPriceValue ? parseInt(costPriceValue) : undefined,
+      discount: (formData.get("discount") as string)
+        ? parseInt(formData.get("discount") as string)
+        : undefined,
       stock: totalStock,
       isActive: mode === "edit" ? formData.get("isActive") === "on" : undefined,
       images: images.length > 0 ? images : undefined,
@@ -267,22 +281,45 @@ export function ProductForm({
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Stock Quantity *
-            </label>
-            <input
-              name="stock"
-              type="number"
-              defaultValue={product?.stock}
-              className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                localErrors.stock ? "border-red-300" : "border-gray-300"
-              }`}
-              placeholder="0"
-            />
-            {localErrors.stock && (
-              <p className="text-red-600 text-sm mt-1">{localErrors.stock}</p>
-            )}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Discount (%) (Optional)
+              </label>
+              <input
+                name="discount"
+                type="number"
+                defaultValue={product?.discount || ""}
+                min="0"
+                max="100"
+                className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
+                  localErrors.discount ? "border-red-300" : "border-gray-300"
+                }`}
+                placeholder="0-100"
+              />
+              {localErrors.discount && (
+                <p className="text-red-600 text-sm mt-1">
+                  {localErrors.discount}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Stock Quantity *
+              </label>
+              <input
+                name="stock"
+                type="number"
+                defaultValue={product?.stock}
+                className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
+                  localErrors.stock ? "border-red-300" : "border-gray-300"
+                }`}
+                placeholder="0"
+              />
+              {localErrors.stock && (
+                <p className="text-red-600 text-sm mt-1">{localErrors.stock}</p>
+              )}
+            </div>
           </div>
         </>
       )}

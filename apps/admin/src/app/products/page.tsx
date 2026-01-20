@@ -38,6 +38,8 @@ export default function ProductsPage() {
     description: string;
     price: number;
     stock: number;
+    costPrice?: number;
+    discount?: number;
     isActive?: boolean;
     images?: string[];
     variants?: Variant[];
@@ -48,6 +50,8 @@ export default function ProductsPage() {
       name: data.name,
       description: data.description,
       price: data.price,
+      costPrice: data.costPrice,
+      discount: data.discount,
       stock: data.stock,
       isActive: data.isActive ?? editingProduct.isActive,
       images: data.images,

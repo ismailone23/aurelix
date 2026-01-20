@@ -41,6 +41,7 @@ export default function CreateProductPage() {
     description: string;
     price: number;
     costPrice?: number;
+    discount?: number;
     stock: number;
     images?: string[];
     variants?: Variant[];
@@ -51,6 +52,7 @@ export default function CreateProductPage() {
       description: data.description,
       price: data.price,
       costPrice: data.costPrice,
+      discount: data.discount,
       stock: data.stock,
       images: data.images,
       variants: data.variants,

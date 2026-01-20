@@ -8,6 +8,8 @@ import { TRPCError } from "@trpc/server";
 const variantSchema = z.object({
   size: z.string(),
   price: z.number().int().positive(),
+  costPrice: z.number().int().min(0).optional(),
+  discount: z.number().int().min(0).max(100).optional().default(0),
   stock: z.number().int().min(0),
 });
 
@@ -66,6 +68,7 @@ export const productsRouter = router({
         description: z.string().optional(),
         price: z.number().int().positive(),
         costPrice: z.number().int().min(0).optional(),
+        discount: z.number().int().min(0).max(100).optional().default(0),
         stock: z.number().int().min(0),
         images: z.array(z.string()).optional(),
         variants: z.array(variantSchema).optional(),
@@ -84,6 +87,7 @@ export const productsRouter = router({
         description: z.string().optional(),
         price: z.number().int().positive().optional(),
         costPrice: z.number().int().min(0).optional(),
+        discount: z.number().int().min(0).max(100).optional(),
         stock: z.number().int().min(0).optional(),
         images: z.array(z.string()).optional(),
         variants: z.array(variantSchema).optional(),

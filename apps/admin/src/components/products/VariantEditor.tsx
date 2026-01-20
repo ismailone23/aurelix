@@ -14,7 +14,7 @@ export function VariantEditor({ variants, setVariants }: VariantEditorProps) {
   const addVariant = () => {
     setVariants((prev) => [
       ...prev,
-      { size: "", price: 0, costPrice: 0, stock: 0 },
+      { size: "", price: 0, costPrice: 0, discount: 0, stock: 0 },
     ]);
   };
 
@@ -93,6 +93,24 @@ export function VariantEditor({ variants, setVariants }: VariantEditorProps) {
                   placeholder="Sell Price"
                   className="w-full border rounded px-2 py-1 text-sm"
                   required
+                />
+              </div>
+              <div className="w-20">
+                <label className="text-xs text-gray-500">Discount %</label>
+                <input
+                  type="number"
+                  value={variant.discount || 0}
+                  onChange={(e) =>
+                    updateVariant(
+                      index,
+                      "discount",
+                      parseInt(e.target.value) || 0,
+                    )
+                  }
+                  placeholder="0-100"
+                  min="0"
+                  max="100"
+                  className="w-full border rounded px-2 py-1 text-sm"
                 />
               </div>
               <div className="w-20">
