@@ -33,115 +33,139 @@ export function VariantEditor({ variants, setVariants }: VariantEditorProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="block text-sm font-medium">Variants (Sizes)</label>
-        <Button type="button" size="sm" variant="outline" onClick={addVariant}>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-gray-900">Variants</label>
+          <p className="text-xs text-gray-500">Manage different sizes and prices</p>
+        </div>
+        <Button type="button" size="sm" variant="outline" onClick={addVariant} className="border-dashed border-gray-300 hover:border-blue-500 hover:text-blue-600">
           <Plus className="w-4 h-4 mr-1" /> Add Variant
         </Button>
       </div>
 
       {variants.length === 0 ? (
-        <p className="text-sm text-gray-500 italic">
-          No variants. Add variants for different sizes/prices, or use base
-          price below.
-        </p>
+        <div className="bg-gray-50 border border-dashed border-gray-200 rounded-lg p-6 text-center">
+          <p className="text-sm text-gray-500">
+            No variants added. The product will use base pricing.
+          </p>
+          <Button type="button" variant="link" onClick={addVariant} className="text-blue-600 h-auto p-0 mt-2">
+            Add your first variant
+          </Button>
+        </div>
       ) : (
-        <div className="space-y-2">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              className="flex gap-2 w-full items-end p-3 bg-gray-50 rounded-lg"
-            >
-              <div className="flex-1">
-                <label className="text-xs text-gray-500">
-                  Size (e.g., 10ml, 13ml)
-                </label>
-                <input
-                  type="text"
-                  value={variant.size}
-                  onChange={(e) => updateVariant(index, "size", e.target.value)}
-                  placeholder="e.g., 10ml"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  required
-                />
-              </div>
-              <div className="w-24">
-                <label className="text-xs text-gray-500">Cost (৳)</label>
-                <input
-                  type="number"
-                  value={variant.costPrice || 0}
-                  onChange={(e) =>
-                    updateVariant(
-                      index,
-                      "costPrice",
-                      parseInt(e.target.value) || 0,
-                    )
-                  }
-                  placeholder="Cost"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                />
-              </div>
-              <div className="w-24">
-                <label className="text-xs text-gray-500">Sell (৳)</label>
-                <input
-                  type="number"
-                  value={variant.price}
-                  onChange={(e) =>
-                    updateVariant(index, "price", parseInt(e.target.value) || 0)
-                  }
-                  placeholder="Sell Price"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  required
-                />
-              </div>
-              <div className="w-20">
-                <label className="text-xs text-gray-500">Discount %</label>
-                <input
-                  type="number"
-                  value={variant.discount || 0}
-                  onChange={(e) =>
-                    updateVariant(
-                      index,
-                      "discount",
-                      parseInt(e.target.value) || 0,
-                    )
-                  }
-                  placeholder="0-100"
-                  min="0"
-                  max="100"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                />
-              </div>
-              <div className="w-20">
-                <label className="text-xs text-gray-500">Stock</label>
-                <input
-                  type="number"
-                  value={variant.stock}
-                  onChange={(e) =>
-                    updateVariant(index, "stock", parseInt(e.target.value) || 0)
-                  }
-                  placeholder="Stock"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  required
-                />
-              </div>
-              <div className="w-16 text-center">
-                <label className="text-xs text-gray-500">Profit</label>
-                <div className="text-sm font-semibold text-green-600">
-                  ৳{variant.price - (variant.costPrice || 0)}
-                </div>
-              </div>
-              <Button
-                type="button"
-                size="sm"
-                variant="destructive"
-                onClick={() => removeVariant(index)}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          ))}
+        <div className="bg-gray-50/50 rounded-lg border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th className="px-4 py-3 font-medium">Size</th>
+                  <th className="px-4 py-3 font-medium">Cost Price (৳)</th>
+                  <th className="px-4 py-3 font-medium">Sell Price (৳)</th>
+                  <th className="px-4 py-3 font-medium">Discount %</th>
+                  <th className="px-4 py-3 font-medium">Stock</th>
+                  <th className="px-4 py-3 font-medium">Profit</th>
+                  <th className="px-2 py-3"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 bg-white">
+                {variants.map((variant, index) => (
+                  <tr key={index} className="group hover:bg-gray-50/50">
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        value={variant.size}
+                        onChange={(e) => updateVariant(index, "size", e.target.value)}
+                        placeholder="e.g. 10ml"
+                        className="w-full border-gray-200 rounded-md text-sm focus:ring-blue-500/20 focus:border-blue-500"
+                        required
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-2 text-gray-400 text-xs">৳</span>
+                        <input
+                          type="number"
+                          value={variant.costPrice || ""}
+                          onChange={(e) =>
+                            updateVariant(
+                              index,
+                              "costPrice",
+                              e.target.value ? parseFloat(e.target.value) : 0,
+                            )
+                          }
+                          placeholder="0"
+                          className="w-24 pl-6 border-gray-200 rounded-md text-sm focus:ring-blue-500/20 focus:border-blue-500"
+                        />
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-2 text-gray-400 text-xs">৳</span>
+                        <input
+                          type="number"
+                          value={variant.price || ""}
+                          onChange={(e) =>
+                            updateVariant(index, "price", e.target.value ? parseFloat(e.target.value) : 0)
+                          }
+                          placeholder="0"
+                          className="w-24 pl-6 border-gray-200 rounded-md text-sm focus:ring-blue-500/20 focus:border-blue-500 bg-blue-50/30"
+                          required
+                        />
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        value={variant.discount || ""}
+                        onChange={(e) =>
+                          updateVariant(
+                            index,
+                            "discount",
+                            e.target.value ? parseFloat(e.target.value) : 0,
+                          )
+                        }
+                        placeholder="0"
+                        min="0"
+                        max="100"
+                        className="w-20 border-gray-200 rounded-md text-sm focus:ring-blue-500/20 focus:border-blue-500"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="number"
+                        value={variant.stock || ""}
+                        onChange={(e) =>
+                          updateVariant(index, "stock", e.target.value ? parseInt(e.target.value) : 0)
+                        }
+                        placeholder="0"
+                        className="w-20 border-gray-200 rounded-md text-sm focus:ring-blue-500/20 focus:border-blue-500"
+                      />
+                    </td>
+                    <td className="px-4 py-2 text-center">
+                      <span className={`font-medium ${(variant.price - (variant.costPrice || 0)) > 0
+                        ? 'text-green-600'
+                        : 'text-gray-400'
+                        }`}>
+                        ৳{variant.price - (variant.costPrice || 0)}
+                      </span>
+                    </td>
+                    <td className="px-2 py-2 text-right">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => removeVariant(index)}
+                        className="text-gray-400 hover:text-red-600 hover:bg-red-50 p-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

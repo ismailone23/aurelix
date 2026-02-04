@@ -11,17 +11,23 @@ const handler = async (req: NextRequest) => {
   if (authorization?.startsWith("Bearer ")) {
     try {
       const token = authorization.substring(7);
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        console.error("JWT_SECRET is not defined");
+        throw new Error("JWT_SECRET is not defined");
+      }
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "your-secret-key",
+        jwtSecret,
       ) as {
         userId: number;
         role: string;
       };
       userId = decoded.userId;
       userRole = decoded.role;
-    } catch {
+    } catch (err) {
       // Invalid token
+      console.error("Token verification failed:", err);
     }
   }
 

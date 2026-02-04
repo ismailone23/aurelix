@@ -68,42 +68,42 @@ export default function AdminDashboard() {
 
   const sourceData: PieDataItem[] = stats
     ? [
-        {
-          name: "Website",
-          value: stats.ordersBySource.website,
-          color: SOURCE_COLORS.website,
-        },
-        {
-          name: "Facebook",
-          value: stats.ordersBySource.facebook,
-          color: SOURCE_COLORS.facebook,
-        },
-        {
-          name: "Manual",
-          value: stats.ordersBySource.manual,
-          color: SOURCE_COLORS.manual,
-        },
-      ].filter((item) => item.value > 0)
+      {
+        name: "Website",
+        value: stats.ordersBySource.website,
+        color: SOURCE_COLORS.website,
+      },
+      {
+        name: "Facebook",
+        value: stats.ordersBySource.facebook,
+        color: SOURCE_COLORS.facebook,
+      },
+      {
+        name: "Manual",
+        value: stats.ordersBySource.manual,
+        color: SOURCE_COLORS.manual,
+      },
+    ].filter((item) => item.value > 0)
     : [];
 
   const statusData: PieDataItem[] = stats
     ? [
-        {
-          name: "Pending",
-          value: stats.ordersByStatus.pending,
-          color: STATUS_COLORS.pending,
-        },
-        {
-          name: "Delivered",
-          value: stats.ordersByStatus.delivered,
-          color: STATUS_COLORS.delivered,
-        },
-        {
-          name: "Cancelled",
-          value: stats.ordersByStatus.cancelled,
-          color: STATUS_COLORS.cancelled,
-        },
-      ].filter((item) => item.value > 0)
+      {
+        name: "Pending",
+        value: stats.ordersByStatus.pending,
+        color: STATUS_COLORS.pending,
+      },
+      {
+        name: "Delivered",
+        value: stats.ordersByStatus.delivered,
+        color: STATUS_COLORS.delivered,
+      },
+      {
+        name: "Cancelled",
+        value: stats.ordersByStatus.cancelled,
+        color: STATUS_COLORS.cancelled,
+      },
+    ].filter((item) => item.value > 0)
     : [];
 
   const getChartData = (): ChartDataItem[] => {
@@ -130,67 +130,70 @@ export default function AdminDashboard() {
     (stats?.ordersByStatus.cancelled || 0);
 
   return (
-    <div className="p-6 lg:p-8 bg-gray-50 min-h-screen">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
             Dashboard
           </h1>
-          <p className="text-gray-500 mt-1">
-            Welcome back! Here&apos;s your business overview.
+          <p className="text-zinc-500 mt-1">
+            Overview of your store's performance.
           </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="flex items-center gap-2"
-        >
-          <RefreshCw
-            className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`}
-          />
-          Refresh
-        </Button>
-      </div>
-
-      {/* Time Range Selector */}
-      <div className="mb-6 flex gap-1 bg-white p-1 rounded-xl shadow-sm w-fit">
-        {(["weekly", "monthly", "yearly"] as const).map((range) => (
-          <button
-            key={range}
-            onClick={() => setTimeRange(range)}
-            className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
-              timeRange === range
-                ? "bg-blue-600 text-white shadow-md"
-                : "text-gray-600 hover:bg-gray-100"
-            }`}
+        <div className="flex items-center gap-3">
+          <div className="flex gap-1 bg-white p-1 rounded-xl border border-zinc-200 shadow-sm">
+            {(["weekly", "monthly", "yearly"] as const).map((range) => (
+              <button
+                key={range}
+                onClick={() => setTimeRange(range)}
+                className={`px-3 py-1.5 rounded-lg font-medium text-sm transition-all ${timeRange === range
+                  ? "bg-zinc-900 text-white shadow-sm"
+                  : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
+                  }`}
+              >
+                {range.charAt(0).toUpperCase() + range.slice(1)}
+              </button>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="flex items-center gap-2 border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 bg-white shadow-sm"
           >
-            {range.charAt(0).toUpperCase() + range.slice(1)}
-          </button>
-        ))}
+            <RefreshCw
+              className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+            <span className="sr-only sm:not-sr-only">Refresh</span>
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <StatsCards stats={stats as DashboardStats} timeRange={timeRange} />
+      <div className="space-y-6">
+        {/* Stats Cards */}
+        <StatsCards stats={stats as DashboardStats} timeRange={timeRange} />
 
-      {/* Revenue by Source Cards */}
-      <RevenueBySourceCards stats={stats as DashboardStats} />
+        {/* Charts Row */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <RevenueChart data={getChartData()} timeRange={timeRange} />
+          </div>
+          <OrderStatusChart data={statusData} totalOrders={totalStatusOrders} />
+        </div>
 
-      {/* Charts Row */}
-      <div className="grid gap-6 lg:grid-cols-3 mb-8">
-        <RevenueChart data={getChartData()} timeRange={timeRange} />
-        <OrderStatusChart data={statusData} totalOrders={totalStatusOrders} />
+        {/* Revenue by Source */}
+        <RevenueBySourceCards stats={stats as DashboardStats} />
+
+        {/* Orders by Source & Recent Products */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <OrderSourceChart data={sourceData} />
+          <RecentProducts products={products} isLoading={productsLoading} />
+        </div>
+
+        {/* Recent Orders */}
+        <RecentOrders orders={orders} isLoading={ordersLoading} />
       </div>
-
-      {/* Orders by Source & Recent Products */}
-      <div className="grid gap-6 lg:grid-cols-2 mb-8">
-        <OrderSourceChart data={sourceData} />
-        <RecentProducts products={products} isLoading={productsLoading} />
-      </div>
-
-      {/* Recent Orders */}
-      <RecentOrders orders={orders} isLoading={ordersLoading} />
     </div>
   );
 }

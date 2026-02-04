@@ -26,9 +26,16 @@ export const authRouter = router({
         })
         .returning();
       if (!user) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "JWT_SECRET is not defined",
+        });
+      }
       const token = jwt.sign(
         { userId: user.id, role: user.role },
-        process.env.JWT_SECRET || "your-secret-key",
+        jwtSecret,
         { expiresIn: "7d" },
       );
 
@@ -58,9 +65,17 @@ export const authRouter = router({
         });
       }
 
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "JWT_SECRET is not defined",
+        });
+      }
+
       const token = jwt.sign(
         { userId: user.id, role: user.role },
-        process.env.JWT_SECRET || "your-secret-key",
+        jwtSecret,
         { expiresIn: "7d" },
       );
 

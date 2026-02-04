@@ -18,9 +18,15 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { totalItems } = useCart();
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleTheme = () => {
@@ -28,93 +34,116 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="shadow-sm sticky top-0 z-40 bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800">
-      <div className="container mx-auto px-4 py-3 flex gap-6 items-center justify-between">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+        ? "bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800 shadow-sm"
+        : "bg-transparent"
+        }`}
+    >
+      <div className="container mx-auto px-4 lg:px-8 py-4 flex gap-6 items-center justify-between">
         <Link
           href="/"
-          className="text-[22px] font-bold text-purple-600 dark:text-purple-400"
+          className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:opacity-70 transition-opacity"
         >
-          Aurelix
+          AURELIX
         </Link>
 
-        <div className="hidden md:flex gap-1 items-center">
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <NavLink key={link.href} href={link.href} label={link.label} />
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+            >
+              {link.label}
+            </Link>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 md:gap-3">
+        <div className="flex items-center gap-2 md:gap-4">
           <Link
             href="/search"
-            className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 hover:border-purple-300 dark:hover:border-purple-600 transition-colors cursor-pointer"
+            className="hidden md:flex p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-all"
+            aria-label="Search"
           >
-            <Search className="w-4 h-4 text-neutral-500" />
-            <span className="text-sm text-neutral-500">Search...</span>
+            <Search className="w-5 h-5" />
           </Link>
 
-          <Link
-            href="/cart"
-            className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors relative"
-            aria-label="Shopping cart"
-          >
-            <ShoppingCart className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
-            {mounted && totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                {totalItems > 9 ? "9+" : totalItems}
-              </span>
-            )}
-          </Link>
-
-          {mounted && (
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-              aria-label="Toggle theme"
+          <div className="flex items-center gap-2">
+            <Link
+              href="/cart"
+              className="p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors relative"
+              aria-label="Shopping cart"
             >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5 text-neutral-400" />
+              <ShoppingCart className="w-5 h-5" />
+              {mounted && totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-sm">
+                  {totalItems > 9 ? "9+" : totalItems}
+                </span>
+              )}
+            </Link>
+
+            {mounted && (
+              <button
+                onClick={toggleTheme}
+                className="p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </button>
+            )}
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" />
               ) : (
-                <Moon className="w-5 h-5 text-neutral-600" />
+                <Menu className="w-5 h-5" />
               )}
             </button>
-          )}
-
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
+          </div>
         </div>
       </div>
 
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-lg">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-1">
+      {/* Mobile Menu */}
+      <div
+        className={`md:hidden absolute top-full left-0 right-0 bg-white/98 dark:bg-neutral-950/98 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800 shadow-lg transition-all duration-300 origin-top ${mobileMenuOpen
+          ? "opacity-100 scale-y-100 visible"
+          : "opacity-0 scale-y-95 invisible"
+          }`}
+      >
+        <div className="container mx-auto px-4 py-6 flex flex-col gap-2">
+          <Link
+            href="/search"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-neutral-100 dark:bg-neutral-900/50 mb-4"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Search className="w-5 h-5 text-neutral-500" />
+            <span className="text-base text-neutral-500">
+              Search products...
+            </span>
+          </Link>
+
+          {navLinks.map((link) => (
             <Link
-              href="/search"
-              className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 mb-2"
+              key={link.href}
+              href={link.href}
+              className="px-4 py-3 text-lg font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <Search className="w-4 h-4 text-neutral-500" />
-              <span className="text-sm text-neutral-500">
-                Search products...
-              </span>
+              {link.label}
             </Link>
-
-            {navLinks.map((link) => (
-              <div key={link.href} onClick={() => setMobileMenuOpen(false)}>
-                <NavLink href={link.href} label={link.label} />
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
-      )}
+      </div>
     </nav>
   );
 }

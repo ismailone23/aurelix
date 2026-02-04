@@ -11,10 +11,16 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        console.error("JWT_SECRET is not defined");
+        return NextResponse.json({ error: "Configuration error" }, { status: 500 });
+      }
+
       const token = authorization.substring(7);
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "your-secret-key",
+        jwtSecret,
       ) as { role: string };
       if (decoded.role !== "admin") {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -68,10 +74,16 @@ export async function DELETE(req: NextRequest) {
     }
 
     try {
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        console.error("JWT_SECRET is not defined");
+        return NextResponse.json({ error: "Configuration error" }, { status: 500 });
+      }
+
       const token = authorization.substring(7);
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "your-secret-key",
+        jwtSecret,
       ) as { role: string };
       if (decoded.role !== "admin") {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });

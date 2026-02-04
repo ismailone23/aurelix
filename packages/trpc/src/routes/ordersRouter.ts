@@ -210,153 +210,155 @@ export const ordersRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      let total = 0;
-      const productIds = input.items.map((item) => item.productId);
+      return await db.transaction(async (tx) => {
+        let total = 0;
+        const productIds = input.items.map((item) => item.productId);
 
-      // Fetch all products at once using inArray
-      const productsList = await db
-        .select()
-        .from(products)
-        .where(inArray(products.id, productIds));
+        // Fetch all products at once using inArray
+        const productsList = await tx
+          .select()
+          .from(products)
+          .where(inArray(products.id, productIds));
 
-      const orderItemsData: {
-        productId: number;
-        quantity: number;
-        price: number;
-        variant: string | null;
-        productName: string;
-      }[] = [];
+        const orderItemsData: {
+          productId: number;
+          quantity: number;
+          price: number;
+          variant: string | null;
+          productName: string;
+        }[] = [];
 
-      // Validate stock and calculate total
-      for (const item of input.items) {
-        const product = productsList.find((p) => p.id === item.productId);
-        if (!product) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: `Product ${item.productId} not found`,
-          });
-        }
-
-        let itemPrice = product.price;
-
-        // Check if variant is specified and product has variants
-        if (item.variant && product.variants) {
-          const variants = product.variants as {
-            size: string;
-            price: number;
-            stock: number;
-          }[];
-          const selectedVariant = variants.find((v) => v.size === item.variant);
-          if (selectedVariant) {
-            itemPrice = selectedVariant.price;
-            // Check variant stock
-            if (selectedVariant.stock < item.quantity) {
-              throw new TRPCError({
-                code: "BAD_REQUEST",
-                message: `Not enough stock for ${product.name} (${item.variant}). Available: ${selectedVariant.stock}`,
-              });
-            }
-          }
-        } else {
-          // Check general stock
-          if (product.stock < item.quantity) {
+        // Validate stock and calculate total
+        for (const item of input.items) {
+          const product = productsList.find((p) => p.id === item.productId);
+          if (!product) {
             throw new TRPCError({
-              code: "BAD_REQUEST",
-              message: `Not enough stock for ${product.name}. Available: ${product.stock}`,
+              code: "NOT_FOUND",
+              message: `Product ${item.productId} not found`,
             });
           }
-        }
 
-        total += itemPrice * item.quantity;
-        orderItemsData.push({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: itemPrice,
-          variant: item.variant || null,
-          productName: product.name,
-        });
-      }
+          let itemPrice = product.price;
 
-      // Create order with customer details
-      const [order] = await db
-        .insert(orders)
-        .values({
-          userId: null, // Guest order - no user
-          total,
-          customerName: input.customerName,
-          customerEmail: input.customerEmail,
-          customerPhone: input.customerPhone,
-          shippingAddress: input.shippingAddress,
-          shippingCity: input.shippingCity,
-          shippingPostalCode: input.shippingPostalCode,
-          notes: input.notes || null,
-        })
-        .returning();
-
-      if (!order) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to create order",
-        });
-      }
-
-      // Create order items and update stock
-      for (const itemData of orderItemsData) {
-        const item = input.items.find(
-          (i) =>
-            i.productId === itemData.productId &&
-            i.variant === itemData.variant,
-        );
-        if (!item) continue;
-
-        // Insert order item
-        await db.insert(orderItems).values({
-          orderId: order.id,
-          productId: itemData.productId,
-          quantity: itemData.quantity,
-          price: itemData.price,
-          variant: itemData.variant,
-        });
-
-        // Update stock
-        const product = productsList.find((p) => p.id === itemData.productId);
-        if (product) {
+          // Check if variant is specified and product has variants
           if (item.variant && product.variants) {
-            // Update variant stock
             const variants = product.variants as {
               size: string;
               price: number;
               stock: number;
             }[];
-            const updatedVariants = variants.map((v) =>
-              v.size === item.variant
-                ? { ...v, stock: v.stock - item.quantity }
-                : v,
-            );
-            await db
-              .update(products)
-              .set({ variants: updatedVariants })
-              .where(eq(products.id, itemData.productId));
+            const selectedVariant = variants.find((v) => v.size === item.variant);
+            if (selectedVariant) {
+              itemPrice = selectedVariant.price;
+              // Check variant stock
+              if (selectedVariant.stock < item.quantity) {
+                throw new TRPCError({
+                  code: "BAD_REQUEST",
+                  message: `Not enough stock for ${product.name} (${item.variant}). Available: ${selectedVariant.stock}`,
+                });
+              }
+            }
           } else {
-            // Update general stock
-            await db
-              .update(products)
-              .set({ stock: sql`${products.stock} - ${item.quantity}` })
-              .where(eq(products.id, itemData.productId));
+            // Check general stock
+            if (product.stock < item.quantity) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: `Not enough stock for ${product.name}. Available: ${product.stock}`,
+              });
+            }
+          }
+
+          total += itemPrice * item.quantity;
+          orderItemsData.push({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: itemPrice,
+            variant: item.variant || null,
+            productName: product.name,
+          });
+        }
+
+        // Create order with customer details
+        const [order] = await tx
+          .insert(orders)
+          .values({
+            userId: null, // Guest order - no user
+            total,
+            customerName: input.customerName,
+            customerEmail: input.customerEmail,
+            customerPhone: input.customerPhone,
+            shippingAddress: input.shippingAddress,
+            shippingCity: input.shippingCity,
+            shippingPostalCode: input.shippingPostalCode,
+            notes: input.notes || null,
+          })
+          .returning();
+
+        if (!order) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create order",
+          });
+        }
+
+        // Create order items and update stock
+        for (const itemData of orderItemsData) {
+          const item = input.items.find(
+            (i) =>
+              i.productId === itemData.productId &&
+              i.variant === itemData.variant,
+          );
+          if (!item) continue;
+
+          // Insert order item
+          await tx.insert(orderItems).values({
+            orderId: order.id,
+            productId: itemData.productId,
+            quantity: itemData.quantity,
+            price: itemData.price,
+            variant: itemData.variant,
+          });
+
+          // Update stock
+          const product = productsList.find((p) => p.id === itemData.productId);
+          if (product) {
+            if (item.variant && product.variants) {
+              // Update variant stock
+              const variants = product.variants as {
+                size: string;
+                price: number;
+                stock: number;
+              }[];
+              const updatedVariants = variants.map((v) =>
+                v.size === item.variant
+                  ? { ...v, stock: v.stock - item.quantity }
+                  : v,
+              );
+              await tx
+                .update(products)
+                .set({ variants: updatedVariants })
+                .where(eq(products.id, itemData.productId));
+            } else {
+              // Update general stock
+              await tx
+                .update(products)
+                .set({ stock: sql`${products.stock} - ${item.quantity}` })
+                .where(eq(products.id, itemData.productId));
+            }
           }
         }
-      }
 
-      // Return order with items for email sending
-      return {
-        ...order,
-        items: orderItemsData.map((item) => ({
-          name: item.productName,
-          quantity: item.quantity,
-          price: item.price,
-          variant: item.variant,
-        })),
-      };
+        // Return order with items for email sending
+        return {
+          ...order,
+          items: orderItemsData.map((item) => ({
+            name: item.productName,
+            quantity: item.quantity,
+            price: item.price,
+            variant: item.variant,
+          })),
+        };
+      });
     }),
 
   // Admin create order (for Facebook/manual orders)

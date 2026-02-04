@@ -7,8 +7,8 @@ async function seed() {
   console.log("Seeding database...");
 
   // Create admin user
-  const adminEmail = "*****";
-  const adminPassword = "****";
+  const adminEmail = "aurelixperfume@gmail.com";
+  const adminPassword = "#Aurelix*1@@";
 
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
 

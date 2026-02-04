@@ -28,11 +28,11 @@ export default function Footer() {
 
   return (
     <footer className="bg-neutral-50 dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Column 1: Company Info */}
           <div className="flex flex-col">
-            <h3 className="text-xl font-bold mb-4 text-purple-600 dark:text-purple-400">
+            <h3 className="text-xl font-serif italic mb-4 text-neutral-900 dark:text-white">
               Aurelix
             </h3>
             <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
@@ -56,7 +56,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-lg text-neutral-500 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                    className="p-2 rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                     aria-label={social.label}
                   >
                     <Icon className="w-5 h-5" />
@@ -76,7 +76,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -94,7 +94,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                  className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
                 >
                   {link.label}
                 </Link>

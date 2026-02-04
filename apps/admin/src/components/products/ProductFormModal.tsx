@@ -58,9 +58,12 @@ export function ProductFormModal({
         newErrors.price = "Price must be greater than 0";
       }
 
-      const stock = parseInt(formData.get("stock") as string);
-      if (isNaN(stock) || stock < 0) {
-        newErrors.stock = "Stock must be 0 or greater";
+      const stockStr = formData.get("stock") as string;
+      if (stockStr && stockStr.trim() !== "") {
+        const stock = parseInt(stockStr);
+        if (isNaN(stock) || stock < 0) {
+          newErrors.stock = "Stock must be 0 or greater";
+        }
       }
     } else {
       for (let i = 0; i < variants.length; i++) {
@@ -174,9 +177,8 @@ export function ProductFormModal({
               name="name"
               defaultValue={product?.name}
               required
-              className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                localErrors.name ? "border-red-300" : "border-gray-200"
-              }`}
+              className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${localErrors.name ? "border-red-300" : "border-gray-200"
+                }`}
               placeholder="Product name"
             />
             {localErrors.name && (
@@ -190,9 +192,8 @@ export function ProductFormModal({
             <textarea
               name="description"
               defaultValue={product?.description ?? ""}
-              className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none ${
-                localErrors.description ? "border-red-300" : "border-gray-200"
-              }`}
+              className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none ${localErrors.description ? "border-red-300" : "border-gray-200"
+                }`}
               rows={3}
               placeholder="Product description"
             />
@@ -219,9 +220,8 @@ export function ProductFormModal({
                     type="number"
                     defaultValue={product?.price}
                     required
-                    className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                      localErrors.price ? "border-red-300" : "border-gray-200"
-                    }`}
+                    className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${localErrors.price ? "border-red-300" : "border-gray-200"
+                      }`}
                     placeholder="0"
                   />
                   {localErrors.price && (
@@ -238,11 +238,10 @@ export function ProductFormModal({
                     name="costPrice"
                     type="number"
                     defaultValue={product?.costPrice || ""}
-                    className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                      localErrors.costPrice
-                        ? "border-red-300"
-                        : "border-gray-200"
-                    }`}
+                    className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${localErrors.costPrice
+                      ? "border-red-300"
+                      : "border-gray-200"
+                      }`}
                     placeholder="0"
                   />
                   {localErrors.costPrice && (
@@ -260,10 +259,8 @@ export function ProductFormModal({
                   name="stock"
                   type="number"
                   defaultValue={product?.stock}
-                  required
-                  className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${
-                    localErrors.stock ? "border-red-300" : "border-gray-200"
-                  }`}
+                  className={`w-full border rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${localErrors.stock ? "border-red-300" : "border-gray-200"
+                    }`}
                   placeholder="0"
                 />
                 {localErrors.stock && (

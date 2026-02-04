@@ -80,33 +80,43 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
         type="button"
         onClick={() => fileInputRef.current?.click()}
         disabled={uploading}
-        className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-400 transition-colors flex flex-col items-center gap-2 disabled:opacity-50"
+        className="w-full border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-8 hover:border-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/10 transition-all duration-300 flex flex-col items-center gap-3 disabled:opacity-50 group"
       >
         {uploading ? (
           <>
-            <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
-            <span className="text-sm text-gray-500">Uploading...</span>
+            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full animate-pulse">
+              <Loader2 className="w-6 h-6 text-purple-600 dark:text-purple-400 animate-spin" />
+            </div>
+            <span className="text-sm font-medium text-purple-600 dark:text-purple-400">Uploading assets...</span>
           </>
         ) : (
           <>
-            <Upload className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-500">
-              Click to upload images
-            </span>
+            <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full group-hover:bg-purple-100 dark:group-hover:bg-purple-900/30 transition-colors duration-300">
+              <Upload className="w-6 h-6 text-gray-500 group-hover:text-purple-600 dark:text-gray-400 dark:group-hover:text-purple-400 transition-colors" />
+            </div>
+            <div className="text-center">
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 group-hover:text-purple-700 dark:group-hover:text-purple-300">
+                Click to upload
+              </span>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                SVG, PNG, JPG or GIF (max 5MB)
+              </p>
+            </div>
           </>
         )}
       </button>
 
       {/* Image Previews */}
       {images.length > 0 && (
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-2">
           {images.map((img, index) => (
-            <div key={index} className="relative group">
+            <div key={index} className="relative group aspect-square rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="relative w-full h-20">
                 <Image
                   src={img}
                   alt={`Preview ${index + 1}`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover rounded border"
                 />
               </div>

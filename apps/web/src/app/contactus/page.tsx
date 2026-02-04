@@ -99,16 +99,16 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="min-h-screen py-12 md:py-16">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen py-12 md:py-16 bg-neutral-50 dark:bg-neutral-950">
+      <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-light mb-4 text-neutral-900 dark:text-white">
               Get In Touch
             </h1>
-            <p className="text-base md:text-lg opacity-70 max-w-2xl mx-auto">
-              We'd love to hear from you. Whether you have a question about our
+            <p className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
+              We&apos;d love to hear from you. Whether you have a question about our
               products, pricing, or anything else, our team is ready to help.
             </p>
           </div>
@@ -116,13 +116,13 @@ export default function ContactUs() {
           <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
             {/* Left Side - Contact Info */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="bg-gradient-to-br from-purple-600 to-pink-500 rounded-2xl p-6 md:p-8 text-white">
-                <h2 className="text-xl md:text-2xl font-bold mb-6">
+              <div className="bg-neutral-900 dark:bg-white rounded-2xl p-6 md:p-8 text-white dark:text-neutral-900">
+                <h2 className="text-xl md:text-2xl font-semibold mb-6">
                   Contact Information
                 </h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-white/20 dark:bg-neutral-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
@@ -133,7 +133,7 @@ export default function ContactUs() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-white/20 dark:bg-neutral-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
@@ -144,7 +144,7 @@ export default function ContactUs() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-white/20 dark:bg-neutral-900/20 rounded-lg flex items-center justify-center flex-shrink-0">
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div>
@@ -157,9 +157,9 @@ export default function ContactUs() {
                 </div>
               </div>
 
-              <div className="bg-neutral-100 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-800">
-                <h3 className="font-semibold mb-2">Business Hours</h3>
-                <div className="space-y-1 text-sm opacity-70">
+              <div className="bg-white dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-800">
+                <h3 className="font-semibold mb-2 text-neutral-900 dark:text-white">Business Hours</h3>
+                <div className="space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
                   <p>Saturday - Thursday: 10:00 AM - 8:00 PM</p>
                   <p>Friday: Closed</p>
                 </div>
@@ -172,7 +172,7 @@ export default function ContactUs() {
                 <div className="mb-6 p-4 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-300 dark:border-green-800 flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 flex-shrink-0" />
                   <span>
-                    Thank you for your message! We'll get back to you within 24
+                    Thank you for your message! We&apos;ll get back to you within 24
                     hours.
                   </span>
                 </div>
@@ -186,7 +186,7 @@ export default function ContactUs() {
 
               <form
                 onSubmit={onSubmit}
-                className="bg-neutral-50 dark:bg-neutral-900 p-6 md:p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800"
+                className="bg-white dark:bg-neutral-900 p-6 md:p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800"
               >
                 <div className="grid sm:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
                   <div className="space-y-2">
@@ -254,7 +254,7 @@ export default function ContactUs() {
 
                 <Button
                   type="submit"
-                  className="w-full h-11 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600"
+                  className="w-full h-11 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100"
                   disabled={isLoading}
                 >
                   {isLoading ? (
